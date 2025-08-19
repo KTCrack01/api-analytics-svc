@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# 앱 시크릿/개인 설정(이름 규칙에 맞게 추가)
+*.secret.*
+*secret*.properties
+*.properties.local
+application-secret.properties
+src/main/resources/application-secret.properties
+
