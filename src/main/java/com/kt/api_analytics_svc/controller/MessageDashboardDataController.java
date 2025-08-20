@@ -1,6 +1,7 @@
 package com.kt.api_analytics_svc.controller;
 
 
+import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
 import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
 import com.kt.api_analytics_svc.service.MessageDashboardDataService;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,15 @@ public class MessageDashboardDataController {
     ) {
         messageDashboardDataService.createData(request);
         return ResponseEntity.created(null).build();
+    }
+
+    @PostMapping
+    public ResponseEntity<?> updateStatus(@RequestBody StatusUpdateRequest request){
+        messageDashboardDataService.updateStatus(
+                request.getProviderSid(),
+                request.getStatus()
+        );
+        return ResponseEntity.ok().build();
+
     }
 }

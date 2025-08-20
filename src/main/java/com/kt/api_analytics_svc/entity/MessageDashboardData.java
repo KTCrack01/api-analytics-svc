@@ -27,14 +27,21 @@ public class MessageDashboardData {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "provider_sid")
+    private String providerSid;
+
     protected MessageDashboardData(){
     }
 
+    public void updateStatus(String status) {
+        this.status = status;
+    }
     @Builder
-    public MessageDashboardData(String userEmail, String phoneNum, LocalDateTime sendAt, String status) {
+    public MessageDashboardData(String userEmail, String phoneNum, LocalDateTime sendAt, String status, String providerSid) {
         this.userEmail = userEmail;
         this.phoneNum = phoneNum;
         this.sendAt = sendAt;
         this.status = status;
+        this.providerSid = getProviderSid();
     }
 }

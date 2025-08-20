@@ -1,6 +1,7 @@
 package com.kt.api_analytics_svc.service;
 
 import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
+import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
 import com.kt.api_analytics_svc.entity.MessageDashboardData;
 import com.kt.api_analytics_svc.repository.MessageDashboardDataRepository;
 import jakarta.transaction.Transactional;
@@ -27,8 +28,17 @@ public class MessageDashboardDataService {
                         .phoneNum(request.getPhoneNum())
                         .sendAt(sendAt)
                         .status(request.getStatus())
+                        .providerSid(request.getProviderSid())
                         .build()
         );
-        return;
+    }
+
+    @Transactional
+    public void updateStatus(String providerSid, String status) {
+
+        messageDashboardDataRepository.findByProviderSid(providerSid)
+                .ifPresent(data -> {
+                    data.updateStatus(status);
+                });
     }
 }
