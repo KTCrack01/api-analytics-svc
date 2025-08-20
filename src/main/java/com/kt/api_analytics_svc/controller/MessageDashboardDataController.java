@@ -1,14 +1,13 @@
 package com.kt.api_analytics_svc.controller;
 
 
-import com.kt.api_analytics_svc.dto.MonthlyCountResponse;
-import com.kt.api_analytics_svc.dto.StatusMonthlyCountResponse;
-import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
-import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
+import com.kt.api_analytics_svc.dto.*;
 import com.kt.api_analytics_svc.service.MessageDashboardDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/dashboard/data")
@@ -50,4 +49,13 @@ public class MessageDashboardDataController {
     ) {
         return messageDashboardDataService.getStatusCounts(year, month);
     }
+
+
+    @GetMapping("/phone-num-ranking")
+    public List<PhoneCountResponse> getPhoneNumRanking(
+            @RequestParam String userEmail,
+            @RequestParam(defaultValue = "10") int limit) {
+        return messageDashboardDataService.getTopPhoneNums(userEmail, limit);
+    }
+
 }

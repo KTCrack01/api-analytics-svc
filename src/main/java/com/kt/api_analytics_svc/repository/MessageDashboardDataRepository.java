@@ -1,6 +1,7 @@
 package com.kt.api_analytics_svc.repository;
 
 import com.kt.api_analytics_svc.entity.MessageDashboardData;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,6 +24,11 @@ public interface MessageDashboardDataRepository extends JpaRepository<MessageDas
         Long getCnt();
     }
 
+    interface PhoneCount {
+        String getPhoneNum();
+        Long getCnt();
+    }
+
     @Query("""
         select month(m.sendAt) as month, count(m) as count
         from MessageDashboardData m
@@ -40,4 +46,13 @@ public interface MessageDashboardDataRepository extends JpaRepository<MessageDas
     """)
     List<StatusCount> countByStatusBetween(@Param("start") LocalDateTime start,
                                            @Param("end") LocalDateTime end);
+
+    @Query("""
+        select m.phoneNum as phoneNum, count(m) as cnt
+        from MessageDashboardData m
+        where m.userEmail = :userEmail
+        group by m.phoneNum
+        order by cnt desc
+    """)
+    List<PhoneCount> countTopPhoneNumsByUser(@Param("userEmail") String userEmail, Pageable pageable);
 }

@@ -1,19 +1,18 @@
 package com.kt.api_analytics_svc.service;
 
-import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
-import com.kt.api_analytics_svc.dto.MonthlyCountResponse;
-import com.kt.api_analytics_svc.dto.StatusMonthlyCountResponse;
-import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
+import com.kt.api_analytics_svc.dto.*;
 import com.kt.api_analytics_svc.entity.MessageDashboardData;
 import com.kt.api_analytics_svc.repository.MessageDashboardDataRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,4 +77,10 @@ public class MessageDashboardDataService {
         return new StatusMonthlyCountResponse(year, month, delivered, failed);
     }
 
+    public List<PhoneCountResponse> getTopPhoneNums(String userEmail, int limit) {
+        return messageDashboardDataRepository.countTopPhoneNumsByUser(userEmail, PageRequest.of(0, limit))
+                .stream()
+                .map(r -> new PhoneCountResponse(r.getPhoneNum(), r.getCnt()))
+                .toList();
+    }
 }
