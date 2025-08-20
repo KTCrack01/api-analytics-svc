@@ -26,7 +26,7 @@ public class MessageDashboardDataController {
         return ResponseEntity.created(null).build();
     }
 
-    @PostMapping
+    @PostMapping("/status")
     public ResponseEntity<?> updateStatus(@RequestBody StatusUpdateRequest request){
         messageDashboardDataService.updateStatus(
                 request.getProviderSid(),
