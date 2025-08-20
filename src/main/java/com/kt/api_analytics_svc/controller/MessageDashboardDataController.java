@@ -2,6 +2,7 @@ package com.kt.api_analytics_svc.controller;
 
 
 import com.kt.api_analytics_svc.dto.MonthlyCountResponse;
+import com.kt.api_analytics_svc.dto.StatusMonthlyCountResponse;
 import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
 import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
 import com.kt.api_analytics_svc.service.MessageDashboardDataService;
@@ -42,4 +43,11 @@ public class MessageDashboardDataController {
         return messageDashboardDataService.getMonthlyCounts(userEmail, year);
     }
 
+    @GetMapping("/status-monthly-counts")
+    public StatusMonthlyCountResponse getStatusMonthlyCounts(
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
+        return messageDashboardDataService.getStatusCounts(year, month);
+    }
 }
