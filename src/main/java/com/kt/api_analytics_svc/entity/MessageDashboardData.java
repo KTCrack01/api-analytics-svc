@@ -42,6 +42,6 @@ public class MessageDashboardData {
         this.phoneNum = phoneNum;
         this.sendAt = sendAt;
         this.status = status;
-        this.providerSid = getProviderSid();
+        this.providerSid = providerSid;
     }
 }

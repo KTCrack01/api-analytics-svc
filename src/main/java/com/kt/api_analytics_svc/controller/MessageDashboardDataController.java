@@ -1,15 +1,13 @@
 package com.kt.api_analytics_svc.controller;
 
 
+import com.kt.api_analytics_svc.dto.MonthlyCountResponse;
 import com.kt.api_analytics_svc.dto.StatusUpdateRequest;
 import com.kt.api_analytics_svc.dto.MessageDashboardDataCreateRequest;
 import com.kt.api_analytics_svc.service.MessageDashboardDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/dashboard/data")
@@ -35,4 +33,13 @@ public class MessageDashboardDataController {
         return ResponseEntity.ok().build();
 
     }
+
+    @GetMapping("/monthly-counts")
+    public MonthlyCountResponse getMonthlyCounts(
+            @RequestParam String userEmail,
+            @RequestParam int year
+    ) {
+        return messageDashboardDataService.getMonthlyCounts(userEmail, year);
+    }
+
 }
