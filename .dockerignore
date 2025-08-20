@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# Gradle
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+
+# 환경변수 파일 (보안)
+.env
+.env.*
+*.secret.*
+*secret*.properties
+
+# 로그 및 임시 파일
+*.log
+*.tmp
+tmp/
+
+# 테스트 및 리포트
+test-output/
+surefire-reports/
+failsafe-reports/
+
+# OS 파일
+.DS_Store
+Thumbs.db
+
+# 문서 파일
+README.md
+*.md
+!Dockerfile
