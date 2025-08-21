@@ -44,10 +44,11 @@ public class MessageDashboardDataController {
 
     @GetMapping("/status-monthly-counts")
     public StatusMonthlyCountResponse getStatusMonthlyCounts(
+            @RequestParam String userEmail,
             @RequestParam int year,
             @RequestParam int month
     ) {
-        return messageDashboardDataService.getStatusCounts(year, month);
+        return messageDashboardDataService.getStatusCounts(userEmail, year, month);
     }
 
 

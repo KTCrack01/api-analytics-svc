@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,36 +47,40 @@ public class MessageDashboardDataService {
     }
 
     public MonthlyCountResponse getMonthlyCounts(String userEmail, int year) {
-        var rows = messageDashboardDataRepository.countByMonth(userEmail, year);
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        ZonedDateTime startZdt = LocalDate.of(year, 1, 1).atStartOfDay(zone);
+        ZonedDateTime endZdt   = startZdt.plusYears(1);
+        Instant from = startZdt.toInstant();
+        Instant to   = endZdt.toInstant();
+
+        var rows = messageDashboardDataRepository.countByMonth(userEmail, from, to, "Asia/Seoul");
 
         Long[] counts = new Long[12];
         Arrays.fill(counts, 0L);
-
-        for (var row : rows) {
-            int month = row.getMonth(); // 1~12
-            counts[month - 1] = row.getCount();
-        }
+        for (var row : rows) counts[row.getMonth() - 1] = row.getCount();
 
         return new MonthlyCountResponse(userEmail, year, Arrays.asList(counts));
     }
 
-    public StatusMonthlyCountResponse getStatusCounts(int year, int month) {
-        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
-        LocalDateTime end   = start.plusMonths(1);
+    public StatusMonthlyCountResponse getStatusCounts(String userEmail, int year, int month) {
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        ZonedDateTime startZdt = LocalDate.of(year, month, 1).atStartOfDay(zone);
+        ZonedDateTime endZdt   = startZdt.plusMonths(1);
+        Instant from = startZdt.toInstant();
+        Instant to   = endZdt.toInstant();
 
-        List<MessageDashboardDataRepository.StatusCount> rows =
-                messageDashboardDataRepository.countByStatusBetween(start, end);
+        var rows = messageDashboardDataRepository.countByStatusBetween(userEmail, from, to);
 
-        long delivered = 0L;
-        long failed = 0L;
-
+        long delivered = 0L, failed = 0L;
         for (var r : rows) {
-            String s = r.getStatus();
-            if ("delivered".equalsIgnoreCase(s)) delivered = r.getCnt();
-            else if ("failed".equalsIgnoreCase(s)) failed = r.getCnt();
+            String s = r.getStatus(); // 이미 lower(...)
+            if ("delivered".equals(s)) delivered = r.getCnt();
+            else if ("failed".equals(s)) failed = r.getCnt();
         }
         return new StatusMonthlyCountResponse(year, month, delivered, failed);
     }
+
+
 
     public List<PhoneCountResponse> getTopPhoneNums(String userEmail, int limit) {
         return messageDashboardDataRepository.countTopPhoneNumsByUser(userEmail, PageRequest.of(0, limit))
