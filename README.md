@@ -101,3 +101,4 @@ docker run --rm -p 8080:8080 \
 ## 참고
 - 포트 정책: [ADR-005](../msa-project-hub/docs/adr/ADR-005-service-port-convention.md) (Service Port Convention)
 - 데이터 분리: [ADR-004](../msa-project-hub/docs/adr/ADR-004-database-per-service.md) (Database Per Service)
+- API 버저닝: [ADR-003](../msa-project-hub/docs/adr/ADR-003-api-versioning-and-base-path.md)
