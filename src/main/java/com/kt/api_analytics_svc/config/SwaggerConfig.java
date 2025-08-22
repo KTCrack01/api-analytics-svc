@@ -27,7 +27,7 @@ public class SwaggerConfig {
                                 .url("http://localhost:8080")
                                 .description("Local Development Server"),
                         new Server()
-                                .url("https://api-analytics.kt.com")
+                                .url("analytics-svc-aucrheemh4edbtac.koreacentral-01.azurewebsites.net")
                                 .description("Production Server")
                 ));
     }
